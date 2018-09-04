@@ -4,6 +4,7 @@
       {{ groupName === 'undefined' ? 'Columns' : groupName }}
     </label>
     <li v-for="(col, idx) in columns">
+    <div class="checkbox check-success">
       <input
         type="checkbox"
         :id="uuidGen(col.field || idx)"
@@ -15,6 +16,7 @@
         {{ col.label || col.title }}
         <i v-if="col.explain" class="fa fa-info-circle" style="cursor: help" :title="col.explain"></i>
       </label>
+    </div>
     </li>
   </ul>
 </template>
