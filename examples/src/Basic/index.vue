@@ -9,6 +9,7 @@ import mockData from '../_mockData'
 
 export default {
   data: () => ({
+    supportBackup: true,
     columns: [
       { title: 'User ID', field: 'uid', sortable: true },
       { title: 'Username', field: 'name' },
@@ -29,6 +30,20 @@ export default {
         })
       },
       deep: true
+    }
+  },
+  methods: {
+    SET_SUPPORT_BACKUP (k, v) {
+      console.log('SET_SUPPORT_BACKUP')
+      localStorage.setItem(k, JSON.stringify(v))
+    },
+    GET_SUPPORT_BACKUP (k) {
+      console.log('GET_SUPPORT_BACKUP')
+      try {
+        return JSON.parse(localStorage.getItem(k))
+      } catch (e) {
+        localStorage.removeItem(k)
+      }
     }
   }
 }

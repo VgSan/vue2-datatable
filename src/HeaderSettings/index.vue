@@ -69,10 +69,17 @@ export default {
       storageKey: this.supportBackup && keyGen(origSettings)
     }
   },
-  created () {
+  async created () {
     if (!this.supportBackup) return
 
-    const backup = getFromLS(this.storageKey)
+    let backup
+    if (this.$parent && this.$parent.$parent &&
+      typeof this.$parent.$parent.GET_SUPPORT_BACKUP === 'function') {
+      backup = await this.$parent.$parent.GET_SUPPORT_BACKUP(this.storageKey);
+    } else {
+      backup = getFromLS(this.storageKey)
+    }
+    
     if (!backup) return // no backup found
 
     replaceWith(this.columns, backup)
@@ -108,8 +115,13 @@ export default {
       this.$refs.colGroups.forEach(colGroup => { colGroup.apply() })
       alsoBackup && this.$nextTick(this.backup)
     },
-    backup () {
-      saveToLS(this.storageKey, this.columns)
+    async backup () {
+      if (this.$parent && this.$parent.$parent &&
+        typeof this.$parent.$parent.SET_SUPPORT_BACKUP === 'function') {
+        await this.$parent.$parent.SET_SUPPORT_BACKUP(this.storageKey, this.columns);
+      } else {
+        saveToLS(this.storageKey, this.columns)
+      }
       this.showProcessing()
       this.usingBak = true
     },
