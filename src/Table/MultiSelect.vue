@@ -13,7 +13,7 @@ import replaceWith from '../_utils/replaceWith'
 export default {
   name: 'MultiSelect',
   props: {
-    id: String,
+    id: String|Number,
     selection: { type: Array, required: true },
     row: Object, // available for tbody checkbox
     rows: Array // available for thead checkbox
